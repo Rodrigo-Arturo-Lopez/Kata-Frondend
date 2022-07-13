@@ -1,36 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
+import { useRef } from 'react'
 
+// hooks
+import useFetcher from '../hooks/useFetcher'
 // components
 import Movies from './Movies'
-
-const apiKey = 'ea92314d'
+import Loading from './Loading'
+import getMovies from '../utils/getMovies'
 
 function App () {
   const searchRef = useRef(null)
-  const [movies, setMovies] = useState([])
-
-  const getMovies = (query = 'batman') => {
-    return axios.get(`
-      http://www.omdbapi.com/?apikey=${apiKey}&s=${query}
-    `).then(response => response)
-  }
-
-  const getData = async () => {
-    // const { data: { Search }} = await getMovies()
-    // const setMovies(Search)
-    const { data } = await getMovies()
-    setMovies(data.Search)
-  }
-
-  useEffect(() => {
-    getData()
-  }, [])
+  const { data: movies, loading, error } = useFetcher('avengers')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    /* const { data } = await getMovies(searchRef.current.value)
+    if (data.Response === 'False') {
+      setError(data.Error)
+      setMovies([])
+    } else {
+      setMovies(data.Search)
+    } */
     const { data } = await getMovies(searchRef.current.value)
-    setMovies(data.Search)
+    console.log(data)
   }
 
   return (
@@ -48,7 +39,9 @@ function App () {
           <button className='btn btn-primary'>Buscar</button>
         </div>
       </form>
-      <Movies data={movies} />
+      <section className='py-4'>
+        {loading ? <Loading /> : <Movies data={movies} />}
+      </section>
     </section>
   )
 }
