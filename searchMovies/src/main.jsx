@@ -2,16 +2,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.css'
 
-// librerias
+// librerías
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 
 // componentes
 import App from './components/App'
+import Paths from './routes'
 
-// borrar el StrictMode antes de desplegar
+// pd: borrar el StrictMode antes de desplegar
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <>
+    {/* <App /> */}
+    <BrowserRouter>
+      <Paths />
+    </BrowserRouter>
+  </>
 )
